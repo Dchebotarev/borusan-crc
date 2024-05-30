@@ -16,24 +16,38 @@
     </style>
 </head>
 <body>
-    <h1>Find Company by Email</h1>
-    <form id="emailForm">
+    <h1>Find Company by Email or Phone</h1>
+    <form id="searchForm">
         <label for="email">Enter your email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="phone">Or enter your phone number:</label><br>
+        <input type="text" id="phone" name="phone"><br><br>
         <input type="submit" value="Submit">
     </form>
     <div id="result"></div>
     <script>
-        document.getElementById('emailForm').addEventListener('submit', function(event) {
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var email = document.getElementById('email').value;
+            var phone = document.getElementById('phone').value;
             var resultDiv = document.getElementById('result');
-            var scriptURL = 'https://script.google.com/macros/s/AKfycbzhntAvmxdtL0iTHOt42EswlG3eeldH9Sdqz9nHvj_WbW6KdH22d5ikxVGtjkajrdhs/exec'; // замените на URL вашего скрипта
+            var scriptURL = 'https://script.google.com/macros/s/AKfycbxX23YH-aZfSRrgBDZKUu4x1_elI8GRrs27YESKdcKoznPFnUW0-eu2k7e1dsXmxqwy/exec';
+            
+            var query = email ? '?email=' + email : '?phone=' + phone;
 
-            fetch(scriptURL + '?email=' + email)
-                .then(response => response.text())
+            fetch(scriptURL + query)
+                .then(response => response.json())
                 .then(data => {
-                    resultDiv.textContent = 'Company Name: ' + data;
+                    if (data.error) {
+                        resultDiv.textContent = 'Error: ' + data.error;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <p><strong>Company Name:</strong> ${data.companyName}</p>
+                            <p><strong>Email:</strong> ${data.email}</p>
+                            <p><strong>Phone:</strong> ${data.phone}</p>
+                            <!-- добавьте другие поля здесь -->
+                        `;
+                    }
                 })
                 .catch(error => {
                     resultDiv.textContent = 'Error: ' + error;

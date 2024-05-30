@@ -28,7 +28,7 @@
             event.preventDefault();
             var email = document.getElementById('email').value;
             var resultDiv = document.getElementById('result');
-            var scriptURL = 'YOUR_SCRIPT_URL'; // замените на URL вашего скрипта
+            var scriptURL = 'https://script.google.com/macros/s/AKfycbzhntAvmxdtL0iTHOt42EswlG3eeldH9Sdqz9nHvj_WbW6KdH22d5ikxVGtjkajrdhs/exec'; // замените на URL вашего скрипта
 
             fetch(scriptURL + '?email=' + email)
                 .then(response => response.text())

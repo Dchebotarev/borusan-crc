@@ -3,10 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
+    <title>Company Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My GitHub Page!</h1>
-    <p>This is a simple webpage hosted on GitHub Pages.</p>
+    <h1>Find Company by Email</h1>
+    <form id="emailForm">
+        <label for="email">Enter your email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var email = document.getElementById('email').value;
+            var resultDiv = document.getElementById('result');
+            var scriptURL = 'YOUR_SCRIPT_URL'; // замените на URL вашего скрипта
+
+            fetch(scriptURL + '?email=' + email)
+                .then(response => response.text())
+                .then(data => {
+                    resultDiv.textContent = 'Company Name: ' + data;
+                })
+                .catch(error => {
+                    resultDiv.textContent = 'Error: ' + error;
+                });
+        });
+    </script>
 </body>
 </html>
